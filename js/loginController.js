@@ -9,19 +9,19 @@ var loginController = function($scope, $rootScope, ngAdminJWTAuthService, ngAdmi
 
 loginController.prototype.login = function() {
 	var that = this;
-	
+
 	var success = this.ngAdminJWTAuthConfigurator.getLoginSuccessCallback() || function(response) {
-		that.notification.log(response.data.message, { addnCls: 'humane-flatty-success' });
-		that.$location.path('/');
-	};		
-	var error = this.ngAdminJWTAuthConfigurator.getLoginErrorCallback() || function(response) {
-		that.notification.log(response.data.message, { addnCls: 'humane-flatty-error' });
+		that.notification.log("Successful login", { addnCls: 'humane-flatty-success' });
+		that.$location.path('/dashboard');
 	};
-	
-	
-	
+	var error = this.ngAdminJWTAuthConfigurator.getLoginErrorCallback() || function(response) {
+		that.notification.log(response.data.error.message, { addnCls: 'humane-flatty-error' });
+	};
+
+
+
 	this.ngAdminJWTAuthService.authenticate(this.data, success, error);
-	 
+
 };
 
 loginController.$inject = ['$rootScope', '$scope', 'ngAdminJWTAuthService', 'ngAdminJWTAuthConfigurator', 'notification', '$location'];

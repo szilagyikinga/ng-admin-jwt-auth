@@ -27,7 +27,7 @@ var ngAdminJWTAuthConfiguratorProvider = function() {
 		states.push('login');
 		authConfigs._nonProtectedStates = states;
 	}
-	
+
   this.setCheckEveryResponseForAuthHeader = function() {
     authConfigs._checkEveryResponseForAuthHeader = true;
   }

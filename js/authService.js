@@ -1,5 +1,5 @@
-var ngAdminJWTAuthService = function($http, jwtHelper, ngAdminJWTAuthConfigurator) { 
-	
+var ngAdminJWTAuthService = function($http, ngAdminJWTAuthConfigurator) {
+
 	return {
 		authenticate: function(data, successCallback, errorCallback) {
 			var url = ngAdminJWTAuthConfigurator.getAuthURL();
@@ -10,39 +10,31 @@ var ngAdminJWTAuthService = function($http, jwtHelper, ngAdminJWTAuthConfigurato
 				headers: {'Content-Type': 'application/json'},
 				data: data
 			}).then(function(response) {
-				var payload = jwtHelper.decodeToken(response.data.token);
-				
-				localStorage.userToken = response.data.token;
-				localStorage.userRole = payload.role;
-				
-				successCallback(response); 
-				
+				localStorage.userToken = response.data.id;
+
+				successCallback(response);
+
 				var customAuthHeader = ngAdminJWTAuthConfigurator.getCustomAuthHeader();
 				if (customAuthHeader) {
 					$http.defaults.headers.common[customAuthHeader.name] = customAuthHeader.template.replace('{{token}}', response.data.token);
 				} else {
-					$http.defaults.headers.common.Authorization = 'Basic ' + response.data.token;
+					$http.defaults.headers.common.Authorization = response.data.id;
 				}
 			} , errorCallback);
 		},
-		
+
 		isAuthenticated: function() {
-			var token = localStorage.userToken;
-			if (!token) {
-				return false;
-			}
-			return jwtHelper.isTokenExpired(token) ? false : true;
+			return !!localStorage.userToken;
 		},
-		
+
 		logout: function() {
-			localStorage.removeItem('userRole');
 			localStorage.removeItem('userToken');
 			return true;
 		}
 	}
-	
+
 };
 
-ngAdminJWTAuthService.$inject = ['$http', 'jwtHelper', 'ngAdminJWTAuthConfigurator'];
+ngAdminJWTAuthService.$inject = ['$http', 'ngAdminJWTAuthConfigurator'];
 
 module.exports = ngAdminJWTAuthService;

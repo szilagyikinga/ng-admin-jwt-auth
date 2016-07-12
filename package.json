@@ -1,11 +1,8 @@
 {
-  "name": "ng-admin.jwt-auth",
+  "name": "ng-admin.loopback-auth",
   "version": "0.4.0",
-  "description": "Small module that allows to use JWT authentication with ng-admin",
+  "description": "Small module that allows to use loopback authentication with ng-admin",
   "main": "Gruntfile.js",
-  "dependencies": {
-    "angular-jwt": "^0.0.9"
-  },
   "devDependencies": {
     "grunt-browserify": "^4.0.0",
     "browserify": "^11.0.1",
@@ -14,17 +11,15 @@
     "grunt-contrib-watch": "^0.6.1",
     "watchify": "^3.3.1"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/akagadovskiy/ng-admin-jwt-auth.git"
+    "url": "git+https://github.com/szilagyikinga/ng-admin-loopback-auth"
   },
   "keywords": [
     "ng-admin",
     "auth",
-    "authentication"
+    "authentication",
+    "loopback"
   ],
   "author": "Alex Kagadovsky",
   "license": "ISC",

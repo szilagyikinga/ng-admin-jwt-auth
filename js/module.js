@@ -1,6 +1,6 @@
 'use strict';
 
-var ngAdminJWTAuth = angular.module('ng-admin.jwt-auth', ['angular-jwt']);
+var ngAdminJWTAuth = angular.module('ng-admin.jwt-auth', []);
 
 ngAdminJWTAuth.config(['$stateProvider', '$httpProvider', function ($stateProvider, $httpProvider) {
 
@@ -54,13 +54,24 @@ ngAdminJWTAuth.run(['$q', 'Restangular', 'ngAdminJWTAuthService', '$http', '$loc
 		return true;
 	});
 
+	Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
+    if(response.status === 401) {
+			localStorage.removeItem('userToken');
+			$location.path('/login');
+
+			return false;
+    }
+
+    return true; // error not handled
+	});
+
 	Restangular.addFullRequestInterceptor(function(response, deferred, responseHandler) {
 		if (ngAdminJWTAuthService.isAuthenticated()) {
 				var customAuthHeader = ngAdminJWTAuthConfigurator.getCustomAuthHeader();
 				if (customAuthHeader) {
 					$http.defaults.headers.common[customAuthHeader.name] = customAuthHeader.template.replace('{{token}}', localStorage.userToken);
 				} else {
-					$http.defaults.headers.common.Authorization = 'Basic ' + localStorage.userToken;
+					$http.defaults.headers.common.Authorization = localStorage.userToken;
 				}
 		}
 	});
